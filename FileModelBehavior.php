@@ -5,7 +5,7 @@
  * Date: 27.06.2018
  */
 
-namespace somov;
+namespace somov\mfiles;
 
 
 use yii\base\Behavior;
