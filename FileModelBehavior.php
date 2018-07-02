@@ -15,6 +15,8 @@ use yii\db\ActiveRecord;
 use yii\helpers\FileHelper;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
+use yii\helpers\Url;
+use yii\web\UrlManager;
 
 /**
  * Class FileModelBehavior
@@ -58,6 +60,21 @@ class FileModelBehavior extends Behavior
      */
     private $_fileTemplate = "{dS}{pk}-{modelSuffix}{ext}";
 
+    private static $_urlManager = null;
+
+
+    protected static function getUrlManager()
+    {
+        if (isset(self::$_urlManager)) {
+            return self::$_urlManager;
+        }
+        self::$_urlManager = new UrlManager([
+            'showScriptName' => false,
+            'enablePrettyUrl' => true,
+        ]);
+
+        return self::$_urlManager;
+    }
 
     private function getDefaultSuffix()
     {
@@ -136,8 +153,8 @@ class FileModelBehavior extends Behavior
         foreach (FileHelper::findFiles(\Yii::getAlias($this->basePath), [
             'only' => ['pattern' => $mask]
         ]) as $file) {
-            $pattern = preg_replace('/_replace/', '(.*?)', strtr($mask, ['*'=>'_replace', '/'=>'\/', '.'=> '\.']));
-            if (preg_match('/'.$pattern.'/', $file, $m)){
+            $pattern = preg_replace('/_replace/', '(.*?)', strtr($mask, ['*' => '_replace', '/' => '\/', '.' => '\.']));
+            if (preg_match('/' . $pattern . '/', $file, $m)) {
                 $files[$m[1]] = $file;
             } else {
                 $files[] = $file;
@@ -263,12 +280,17 @@ class FileModelBehavior extends Behavior
      */
     public function getFileUrl($extension = null, $suffix = null, $shema = false, $params = [])
     {
-        return \yii\helpers\Url::to([
+        Url::$urlManager = self::getUrlManager();
+
+        $url = Url::to([
                 \Yii::getAlias(
                     $this->baseUrl . $this->getFileName($extension, $suffix))
             ] + $params,
             $shema
         );
+        Url::$urlManager = null;
+
+        return $url;
     }
 
     /**
