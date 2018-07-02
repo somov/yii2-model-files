@@ -12,8 +12,8 @@ namespace mtest;
 use Codeception\TestCase\Test;
 use mtest\fixtures\ImageModelBehaviorFixture;
 use mtest\models\ImageModel;
-use somov\ImageModelBehavior;
-use yii\base\InvalidConfigException;
+use somov\mfiles\ImageModelBehavior;
+
 
 class ImageModelBehaviorTest extends Test
 {

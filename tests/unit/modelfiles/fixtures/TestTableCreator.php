@@ -20,15 +20,16 @@ trait TestTableCreator
         try {
             $this->getTableSchema();
         } catch (InvalidConfigException $exception) {
-            Yii::$app->db->createCommand()->createTable($this->getTableName(),
-                $this->getColumns())->execute();
+            $table = $this->getTableName();
+            Yii::$app->db->createCommand()->createTable($table, $this->getColumns())->execute();
         }
         parent::beforeLoad();
     }
 
-    public function unload(){
-        $table  = $this->getTableName();
-        if ($s = Yii::$app->db->schema->getTableSchema($table,true)) {
+    public function unload()
+    {
+        $table = $this->getTableName();
+        if ($s = Yii::$app->db->schema->getTableSchema($table, true)) {
             Yii::$app->db->createCommand()->dropTable($table)->execute();
         }
     }

@@ -10,7 +10,7 @@ namespace mtest;
 use Codeception\TestCase\Test;
 use mtest\fixtures\FileModelBehaviorFixture;
 use mtest\models\FileModel;
-use somov\FileModelBehavior;
+use somov\mfiles\FileModelBehavior;
 use yii\helpers\ArrayHelper;
 
 class FileModelBehaviorTest extends Test
@@ -59,7 +59,6 @@ class FileModelBehaviorTest extends Test
         $this->assertSame('/_data/1/suffix.jpg', $model->getFileName('jpg', 'suffix'));
         $this->assertContains('tests', $model->getFullFileName('jpg', 'suffix'));
     }
-
 
     public function testAddSingleFile()
     {

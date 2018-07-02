@@ -8,7 +8,8 @@
 
 namespace mtest\models;
 
-use somov\FileModelBehavior;
+
+use somov\mfiles\FileModelBehavior;
 use yii\base\Model;
 use yii\db\ActiveRecord;
 

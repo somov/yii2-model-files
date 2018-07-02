@@ -7,9 +7,7 @@
  */
 
 namespace mtest\models;
-
-
-use somov\ImageModelBehavior;
+use somov\mfiles\ImageModelBehavior;
 
 
 /**
@@ -25,7 +23,7 @@ class ImageModel extends FileModel
 
     public static function tableName()
     {
-        return '_test_file_image_model_behavior';
+        return '_test_image_behavior';
     }
 
     public function rules()

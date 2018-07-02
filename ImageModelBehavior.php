@@ -5,7 +5,7 @@
  * Date: 21.11.2017
  */
 
-namespace somov;
+namespace somov\mfiles;
 
 /**
  * Class ImageModelBehavior
