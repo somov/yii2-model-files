@@ -28,6 +28,11 @@ class ImageModelBehavior extends FileModelBehavior
 
     public $extension = 'jpg';
 
+    /**
+     * @var  array additional params to image url
+     */
+    public $params = [];
+
 
     public function getFileTemplate()
     {
@@ -43,7 +48,7 @@ class ImageModelBehavior extends FileModelBehavior
     public function getImageUrl($suffix = null, $params = [], $schema = false)
     {
         if ($this->isFileExists(null, $suffix)) {
-            return $this->getFileUrl(null, $suffix, $schema, $params);
+            return $this->getFileUrl(null, $suffix, $schema, array_merge($this->params, $params));
         } else {
             if (isset($this->defaultCallback) && is_callable($this->defaultCallback)) {
                 return call_user_func($this->defaultCallback);

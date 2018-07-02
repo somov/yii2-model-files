@@ -2,7 +2,6 @@
     "name": "somov/yii2-model-files",
     "description": "Yii2 model files",
     "type": "yii2-extension",
-    "version": "1.0.0",
     "keywords": [
         "yii2",
         "file",
