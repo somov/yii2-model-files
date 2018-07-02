@@ -1,0 +1,12 @@
+tests/unit/modelfiles/FileModelBehaviorTest.php:testFileName
+tests/unit/modelfiles/FileModelBehaviorTest.php:testAddSingleFile
+tests/unit/modelfiles/FileModelBehaviorTest.php:testAddMultipleAddFiles
+tests/unit/modelfiles/FileModelBehaviorTest.php:testRemoveModelDirectory
+tests/unit/modelfiles/FileModelBehaviorTest.php:testFindFilesTemplates
+tests/unit/modelfiles/FileModelBehaviorTest.php:testFindFiles
+tests/unit/modelfiles/FileModelBehaviorTest.php:testFindFiles
+tests/unit/modelfiles/FileModelBehaviorTest.php:testFindFiles
+tests/unit/modelfiles/FileModelBehaviorTest.php:testFindFiles
+tests/unit/modelfiles/FileModelBehaviorTest.php:testFindFiles
+tests/unit/modelfiles/FileModelBehaviorTest.php:testFindFiles
+tests/unit/modelfiles/ImageModelBehaviorTest.php:testImage
