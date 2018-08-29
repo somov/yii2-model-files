@@ -108,12 +108,12 @@ class FileModelBehavior extends Behavior
     {
         $count = 0;
 
-        $mask = (isset($mask)) ? $mask : $this->getSearchFilesMask();
-
-        if ($this->canDeleteParentDir && preg_match('/\*\.\*$/', $mask)) {
+        if ($this->canDeleteParentDir) {
             FileHelper::removeDirectory(dirname($this->getFullFileName()));
             return true;
         }
+
+        $mask = (isset($mask)) ? $mask : $this->getSearchFilesMask();
 
         foreach ($this->findFiles($mask) as $file) {
             if (unlink($file)) {
