@@ -12,6 +12,7 @@ use yii\base\Behavior;
 use yii\base\Exception;
 use yii\base\Model;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
@@ -68,10 +69,15 @@ class FileModelBehavior extends Behavior
         if (isset(self::$_urlManager)) {
             return self::$_urlManager;
         }
-        self::$_urlManager = new UrlManager([
+        $manager = \Yii::$app->getUrlManager();
+        $properties = ArrayHelper::toArray($manager, [
+            $manager::className() => ['hostInfo', 'scriptUrl', 'baseUrl']
+        ], false);
+
+        self::$_urlManager = new UrlManager(array_merge($properties, [
             'showScriptName' => false,
             'enablePrettyUrl' => true,
-        ]);
+        ]));
 
         return self::$_urlManager;
     }
