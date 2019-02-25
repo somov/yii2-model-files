@@ -56,6 +56,8 @@ class FileModelBehavior extends Behavior
      */
     public $canDeleteParentDir = false;
 
+    public $urlManagerComponentId = 'urlManager';
+
     /** Шаблон для генерации имени файла
      * @var string
      */
@@ -64,12 +66,15 @@ class FileModelBehavior extends Behavior
     private static $_urlManager = null;
 
 
-    protected static function getUrlManager()
+    /**
+     * @return UrlManager|null
+     */
+    protected function getUrlManager()
     {
         if (isset(self::$_urlManager)) {
             return self::$_urlManager;
         }
-        $manager = \Yii::$app->getUrlManager();
+        $manager = \Yii::$app->{$this->urlManagerComponentId};
         $properties = ArrayHelper::toArray($manager, [
             $manager::className() => ['hostInfo', 'scriptUrl', 'baseUrl']
         ], false);
@@ -286,7 +291,7 @@ class FileModelBehavior extends Behavior
      */
     public function getFileUrl($extension = null, $suffix = null, $shema = false, $params = [])
     {
-        Url::$urlManager = self::getUrlManager();
+        Url::$urlManager  = $this->getUrlManager();
 
         $url = Url::to([
                 \Yii::getAlias(
