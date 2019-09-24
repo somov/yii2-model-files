@@ -12,6 +12,7 @@ namespace mtest;
 use Codeception\TestCase\Test;
 use mtest\fixtures\ImageModelBehaviorFixture;
 use mtest\models\ImageModel;
+use somov\mfiles\FileModelBehaviorInterface;
 use somov\mfiles\ImageModelBehavior;
 
 
@@ -19,7 +20,7 @@ use somov\mfiles\ImageModelBehavior;
 class ImageModelBehaviorTest extends Test
 {
 
-    /** @var  ImageModel */
+    /** @var  ImageModel|FileModelBehaviorInterface */
     private $model;
 
     public function _fixtures()

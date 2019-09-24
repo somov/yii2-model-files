@@ -24,12 +24,13 @@ use yii\web\UrlManager;
  * @package app\components\behaviors
  * @property string fileTemplate
  */
-class FileModelBehavior extends Behavior
+class FileModelBehavior extends Behavior implements FileModelBehaviorInterface
 {
 
-    const FILE_HANDLER_TYPE_COPY = 'copyFile';
-    const FILE_HANDLER_TYPE_MOVE = 'moveFile';
-    const FILE_HANDLER_TYPE_LINK = 'linkFile';
+    /**
+     * @var Model
+     */
+    public $owner;
 
     /** File extension
      * @var string
@@ -63,6 +64,9 @@ class FileModelBehavior extends Behavior
      */
     private $_fileTemplate = "{dS}{pk}-{modelSuffix}{ext}";
 
+    /**
+     * @var UrlManager|null
+     */
     private static $_urlManager = null;
 
 
@@ -87,9 +91,12 @@ class FileModelBehavior extends Behavior
         return self::$_urlManager;
     }
 
+    /**
+     * @return string
+     */
     private function getDefaultSuffix()
     {
-        return Inflector::camel2id(StringHelper::basename($this->owner::className()));
+        return Inflector::camel2id(StringHelper::basename(get_class($this->owner)));
     }
 
 
@@ -114,6 +121,7 @@ class FileModelBehavior extends Behavior
     /**
      * @param null $mask
      * @return int|true count deleted files or true on deleted parent folder
+     * @throws \yii\base\ErrorException
      */
     public function deleteFiles($mask = null)
     {
@@ -160,13 +168,18 @@ class FileModelBehavior extends Behavior
         $mask = (isset($mask)) ? $mask : $this->getSearchFilesMask();
 
         $files = [];
+        $dir = \Yii::getAlias($this->basePath) . dirname($mask);
 
-        foreach (FileHelper::findFiles(\Yii::getAlias($this->basePath), [
-            'only' => ['pattern' => $mask]
+        if (!is_dir($dir)) {
+            return [];
+        }
+
+        foreach (FileHelper::findFiles($dir, [
+            'only' => ['pattern' => basename($mask)]
         ]) as $file) {
             $pattern = preg_replace('/_replace/', '(.*?)', strtr($mask, ['*' => '_replace', '/' => '\/', '.' => '\.']));
             if (preg_match('/' . $pattern . '/', $file, $m)) {
-                $files[$m[1]] = $file;
+                $files[isset($m[1]) ? basename($m[1]) : null] = $file;
             } else {
                 $files[] = $file;
             }
@@ -220,7 +233,7 @@ class FileModelBehavior extends Behavior
      */
     protected function getExt()
     {
-        return '.' . $this->extension;
+        return !empty($this->extension) ? '.' . $this->extension : '';
     }
 
     /** Get model suffix
@@ -285,19 +298,19 @@ class FileModelBehavior extends Behavior
     /**
      * @param string|null $extension
      * @param string|null $suffix
-     * @param bool $shema
+     * @param bool $scheme
      * @param array $params
      * @return string
      */
-    public function getFileUrl($extension = null, $suffix = null, $shema = false, $params = [])
+    public function getFileUrl($extension = null, $suffix = null, $scheme = false, $params = [])
     {
-        Url::$urlManager  = $this->getUrlManager();
+        Url::$urlManager = $this->getUrlManager();
 
         $url = Url::to([
                 \Yii::getAlias(
                     $this->baseUrl . $this->getFileName($extension, $suffix))
             ] + $params,
-            $shema
+            $scheme
         );
         Url::$urlManager = null;
 
@@ -390,11 +403,12 @@ class FileModelBehavior extends Behavior
      * @param string|null $suffix
      * @param string $fileHandlerType
      * @return Model|ActiveRecord
+     * @throws Exception
      */
     public function addFile($files, $suffix = null, $fileHandlerType = self::FILE_HANDLER_TYPE_COPY)
     {
         if ($this->owner instanceof ActiveRecord) {
-            /** @var ActiveRecord $behavior */
+            /** @var ActiveRecord|self $behavior */
             $behavior = $this;
             $this->owner->on((($this->owner->isNewRecord) ? ActiveRecord::EVENT_AFTER_INSERT : ActiveRecord::EVENT_AFTER_UPDATE),
                 function () use ($behavior, $files, $suffix, $fileHandlerType) {

@@ -11,6 +11,7 @@ use Codeception\TestCase\Test;
 use mtest\fixtures\FileModelBehaviorFixture;
 use mtest\models\FileModel;
 use somov\mfiles\FileModelBehavior;
+use somov\mfiles\FileModelBehaviorInterface;
 use yii\helpers\ArrayHelper;
 
 class FileModelBehaviorTest extends Test
@@ -35,12 +36,12 @@ class FileModelBehaviorTest extends Test
 
     /**
      * @param array $behavior
-     * @return FileModel
+     * @return FileModel|FileModelBehaviorInterface
      */
     private function getModel(array $behavior = [])
     {
         $file = $this->getFile();
-
+        /** @var FileModel|FileModelBehaviorInterface $m */
         $m = new FileModel();
         $m->attachBehavior('file', ArrayHelper::merge(self::BC, $behavior));
         $m->addFile([
@@ -63,7 +64,6 @@ class FileModelBehaviorTest extends Test
     public function testAddSingleFile()
     {
 
-        /** @var FileModel $model */
         $model = $this->getModel([
             'fileTemplate' => "{dS}_data{dS}{pK}-{mS}{ext}"
         ]);
@@ -84,6 +84,7 @@ class FileModelBehaviorTest extends Test
 
     public function testAddUpdate()
     {
+        /** @var FileModel|FileModelBehaviorInterface $model */
         $model = FileModel::findOne(99);
         $model->attachBehavior('file', array_merge(self::BC, [
             'fileTemplate' => "{dS}_data{dS}{pK}-{mS}{ext}"
@@ -108,7 +109,7 @@ class FileModelBehaviorTest extends Test
     public function testAddMultipleAddFiles()
     {
 
-        /** @var FileModel $model */
+
         $model = $this->getModel([
             'fileTemplate' => "{dS}_data{dS}{pK}-{mS}{ext}"
         ]);
@@ -131,7 +132,7 @@ class FileModelBehaviorTest extends Test
 
     public function testRemoveModelDirectory()
     {
-        /** @var FileModel $model */
+
         $model = $this->getModel([
             'fileTemplate' => "{dS}_data{dS}{pK}{dS}{mS}{ext}",
             'canDeleteParentDir' => true
@@ -171,7 +172,7 @@ class FileModelBehaviorTest extends Test
     public function testFindFiles($id, $template){
 
 
-        /** @var FileModel $model */
+
         $model = $this->getModel([
             'fileTemplate' => $template,
         ]);
