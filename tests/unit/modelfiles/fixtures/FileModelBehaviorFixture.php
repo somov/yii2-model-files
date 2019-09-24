@@ -14,6 +14,7 @@ class FileModelBehaviorFixture extends ActiveFixture
 {
     use TestTableCreator;
 
+
     public $dataDirectory = '@mtest/fixtures/data';
 
     public $modelClass = FileModel::class;
