@@ -15,7 +15,7 @@ use yii\db\ActiveRecord;
  * Class FileModelBehaviorInterface
  * @package somov\mfiles
  *
- * @method integer deleteFiles($mask = null)
+ * @method integer|boolean deleteFiles($mask = null)
  * @method array findFiles($mask = null)
  * @method boolean deleteFile($extension = null, $suffix = null)
  * @method string getFileName($extension = null, $suffix = null)

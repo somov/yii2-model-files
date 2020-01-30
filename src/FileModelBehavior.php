@@ -120,7 +120,7 @@ class FileModelBehavior extends Behavior implements FileModelBehaviorInterface
 
     /**
      * @param null $mask
-     * @return int|true count deleted files or true on deleted parent folder
+     * @return int|boolean count deleted files or true on deleted parent folder
      * @throws \yii\base\ErrorException
      */
     public function deleteFiles($mask = null)

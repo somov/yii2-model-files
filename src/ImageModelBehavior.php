@@ -11,7 +11,7 @@ namespace somov\mfiles;
  * Class ImageModelBehavior
  * @package app\components\behaviors
  */
-class ImageModelBehavior extends FileModelBehavior
+class ImageModelBehavior extends FileModelBehavior implements ImageModelBehaviorInterface
 {
 
     public $default = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
@@ -79,9 +79,19 @@ class ImageModelBehavior extends FileModelBehavior
     /**
      * @param array $images
      * @param string $fileHandlerType
+     * @throws \yii\base\Exception
      */
     public function saveImages(array $images, $fileHandlerType = self::FILE_HANDLER_TYPE_COPY)
     {
         $this->addFile($images, null, $fileHandlerType);
+    }
+
+    /**
+     * @param string|null $suffix
+     * @return boolean
+     */
+    public function imageExists($suffix = null)
+    {
+        return $this->isFileExists($this->extension, $suffix);
     }
 }
