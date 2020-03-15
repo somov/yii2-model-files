@@ -11,7 +11,7 @@ namespace somov\mfiles;
 /**
  * Interface ImageModelBehaviorInterface
  * @package somov\mfiles
- * @method array  getImageUrl($suffix = null, $params = [], $schema = false);
+ * @method string getImageUrl($suffix = null, $params = [], $schema = false);
  * @method string getImageFile($suffix = null)
  * @method saveImages(array $images, $fileHandlerType = FileModelBehaviorInterface::FILE_HANDLER_TYPE_COPY)
  * @method boolean imageExists(string $suffix = null)

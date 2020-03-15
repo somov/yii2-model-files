@@ -23,6 +23,7 @@ use yii\web\UrlManager;
  * Class FileModelBehavior
  * @package app\components\behaviors
  * @property string fileTemplate
+ * @property-write $attachFile
  */
 class FileModelBehavior extends Behavior implements FileModelBehaviorInterface
 {
@@ -51,6 +52,7 @@ class FileModelBehavior extends Behavior implements FileModelBehaviorInterface
      * @var string
      */
     public $baseUrl = '@web';
+
 
     /** Может лм поведение удалять родительскую директорию файлов
      * @var bool
@@ -420,5 +422,13 @@ class FileModelBehavior extends Behavior implements FileModelBehaviorInterface
         return $this->owner;
     }
 
+    /**
+     * @param string $file
+     * @throws Exception
+     */
+    public function setAttachFile($file)
+    {
+        $this->addFile($file);
+    }
 
 }
