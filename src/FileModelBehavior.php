@@ -24,6 +24,7 @@ use yii\web\UrlManager;
  * @package app\components\behaviors
  * @property string fileTemplate
  * @property-write $attachFile
+ * @property array attachedFiles
  */
 class FileModelBehavior extends Behavior implements FileModelBehaviorInterface
 {
@@ -71,6 +72,11 @@ class FileModelBehavior extends Behavior implements FileModelBehaviorInterface
      */
     private static $_urlManager = null;
 
+    /**
+     * @var array
+     */
+    private $_attachedFiles = [];
+
 
     /**
      * @return UrlManager|null
@@ -101,7 +107,9 @@ class FileModelBehavior extends Behavior implements FileModelBehaviorInterface
         return Inflector::camel2id(StringHelper::basename(get_class($this->owner)));
     }
 
-
+    /**
+     * @return array
+     */
     public function events()
     {
         return [
@@ -430,5 +438,27 @@ class FileModelBehavior extends Behavior implements FileModelBehaviorInterface
     {
         $this->addFile($file);
     }
+
+    /**
+     * @return array
+     */
+    public function getAttachedFiles()
+    {
+        return array_merge($this->_attachedFiles, $this->findFiles());
+    }
+
+    /**
+     * @param array $attachedFiles
+     * @throws Exception
+     */
+    public function setAttachedFiles($attachedFiles)
+    {
+        if (!empty($this->_attachedFiles)) {
+            return;
+        }
+        $this->_attachedFiles = $attachedFiles;
+        $this->addFile($attachedFiles);
+    }
+
 
 }

@@ -51,7 +51,7 @@ class ImageModelBehavior extends FileModelBehavior implements ImageModelBehavior
             return $this->getFileUrl(null, $suffix, $schema, array_merge($this->params, $params));
         } else {
             if (isset($this->defaultCallback) && is_callable($this->defaultCallback)) {
-                return call_user_func($this->defaultCallback);
+                return call_user_func($this->defaultCallback, $this->owner, $suffix, $params, $schema);
             }
         }
         return $this->default;

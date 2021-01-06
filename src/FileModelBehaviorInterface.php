@@ -23,6 +23,7 @@ use yii\db\ActiveRecord;
  * @method string getFullFileName($extension = null, $suffix = null)
  * @method boolean isFileExists($extension = null, $suffix = null, &$file = null)
  * @method Model|ActiveRecord addFile(string|array $files, $suffix = null, $fileHandlerType = FileModelBehaviorInterface::FILE_HANDLER_TYPE_COPY)
+ * @property array attachedFiles
  */
 interface FileModelBehaviorInterface
 {
